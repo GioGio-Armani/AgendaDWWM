@@ -6,12 +6,11 @@ const {
 } = require("./lib/getAttachment");
 const { promisify } = require("util");
 const processImage = require("./lib/processImage");
-const addEvent = require("./lib/addEvent");
+const parseEvent = require("./lib/parseEvent");
 
 // Configurer les informations d'identification et l'accès au compte Gmail
 const credentials = "./credentials.json";
 const token = "./token.json";
-const SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"];
 const readFileAsync = promisify(fs.readFile);
 
 async function main() {
@@ -34,7 +33,8 @@ async function main() {
     // traiter les images
     const agendaJson = await processImage(imagePaths);
     await deleteImages(imagePaths);
-    await addEvent(agendaJson);
+    const agendaParse = await parseEvent(oAuth2Client, agendaJson);
+    console.log(agendaParse);
   } catch (error) {
     console.log("Une erreur s'est produite :", error);
   }
