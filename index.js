@@ -31,10 +31,13 @@ async function main() {
     const subject = "planning";
     const imagePaths = await getAttachmentsBySubject(oAuth2Client, subject);
     // traiter les images
-    const agendaJson = await processImage(imagePaths);
-    await deleteImages(imagePaths);
-    const agendaParse = await parseEvent(oAuth2Client, agendaJson);
-    console.log(agendaParse);
+    if (imagePaths) {
+      const agendaJson = await processImage(imagePaths);
+      await deleteImages(imagePaths);
+      await parseEvent(oAuth2Client, agendaJson);
+    } else {
+      console.log("Aucune pièce jointe trouvée.");
+    }
   } catch (error) {
     console.log("Une erreur s'est produite :", error);
   }
