@@ -34,6 +34,8 @@ async function main() {
     if (imagePaths) {
       const agendaJson = await processImage(imagePaths);
       await deleteImages(imagePaths);
+
+      // Parser pour google agenda et créer les événements
       await parseEvent(oAuth2Client, agendaJson);
     } else {
       console.log("Aucune pièce jointe trouvée.");
